@@ -205,6 +205,25 @@ function getVertexNormals(vertices, faceNormals, indexList) {
   return vertexNormals.map(function(v) { return normalize(v); });
 }
 
+/* Function to generate perspective matrix. Takes the FoV, aspect ratio of the 
+   canvas, the near clipping distance, and the far clipping distance as arguments. */
+function createPerspectiveMatrixWithFOV(verticalFov, aspectRatio, near, far){
+	
+	var fov = 1.0 / Math.tan(radians(verticalFov) / 2);
+    var depth = far - near;
+
+    var matrix = mat4(); // initialize identity matrix
+    matrix[0][0] = fov / aspectRatio;
+    matrix[1][1] = fov;
+    matrix[2][2] = (-(near + far)) / depth;
+    matrix[2][3] = (-2 * near * far) / depth;
+    matrix[3][2] = -1;
+    matrix[3][3] = 0.0;
+
+    return matrix;
+	
+}
+
 function togglePoint() {
   pointOn = !pointOn;
 }
