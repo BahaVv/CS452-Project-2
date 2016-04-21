@@ -60,7 +60,7 @@
 
   uniform vec3 ka, kd, ks;
   uniform float alpha;
-  uniform vec4 colVec;
+  uniform vec4 colorVector;
 
   varying vec3 directional;
   varying vec3 Ia_pp0, Id_pp0, Is_pp0;
@@ -94,7 +94,7 @@
 
     R = clamp(Ra + Rd + Rs + directional, 0.0, 1.0);
 
-    gl_FragColor = vec4( R.r, R.g, R.b, 1.0 );
+    gl_FragColor = colorVector + vec4( R.r, R.g, R.b, 1.0 );
   }
 
 </script>

@@ -1,7 +1,7 @@
 // GL
 var gl;
 // Graphics Shader
-var myShaderProgram;
+var program;
 // Number of vertices in the shape and the number of polygons.
 var numVertices;
 var numTriangles;
@@ -24,6 +24,8 @@ var M;
 var Porth;
 var Pper;
 
+var PLoc;
+
 // Viewer location.
 var e;
 // Look-at point.
@@ -37,6 +39,11 @@ var perLeft, perRight, perTop, perBottom;
 
 // Distance bounds
 var near, far;
+
+// A vector for holding a solid color to be passed to the vertex shader
+var colorVector;
+// Uniform location for colorVector
+var colorVectorLoc;
 
 var c1 = 1;
 var alph1 = 0, alph2 = 0, alph3 = 0;
@@ -65,8 +72,8 @@ function initGL(){
   calcPorthAndPper();
 
   // Below is all of the accessing of the GPU
-  myShaderProgram = initShaders( gl, "vertex-shader", "fragment-shader" );
-  gl.useProgram( myShaderProgram );
+  program = initShaders( gl, "vertex-shader", "fragment-shader" );
+  gl.useProgram( program );
 
   numVertices = 1738;
   numTriangles = 3170;
@@ -77,20 +84,22 @@ function initGL(){
 
   setupBuffers();
 
-  var MLoc = gl.getUniformLocation(myShaderProgram, "M");
+  var MLoc = gl.getUniformLocation(program, "M");
   gl.uniformMatrix4fv(MLoc, false, M);
 
-  var MinvTransLoc = gl.getUniformLocation(myShaderProgram, "MinvTrans");
+  var MinvTransLoc = gl.getUniformLocation(program, "MinvTrans");
   gl.uniformMatrix4fv(MinvTransLoc, false, MinvTrans);
 
-  PLoc = gl.getUniformLocation(myShaderProgram, "P");
+  PLoc = gl.getUniformLocation(program, "P");
   gl.uniformMatrix4fv(PLoc, false, Pper);
 
   getNeededLocations();
   enablePointLight();
   enableDirectionalLight();
 
-  alphaLoc = gl.getUniformLocation(myShaderProgram, "alpha");
+  colorVectorLoc = gl.getUniformLocation(program, "colorVector");
+
+  alphaLoc = gl.getUniformLocation(program, "alpha");
   gl.uniform1f(alphaLoc, alpha);
 
   render();
@@ -98,6 +107,8 @@ function initGL(){
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+    colorVector = vec4(1.0, 0.0, 0.0, 1.0);
+    gl.uniform4fv(colorVectorLoc, colorVector);
     gl.drawElements( gl.TRIANGLES, 3 * numTriangles, gl.UNSIGNED_SHORT, 0 );
     rotate();
     requestAnimFrame(render);
@@ -112,7 +123,7 @@ function setupBuffers() {
   gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatVertices, gl.STATIC_DRAW);
 
-  var vertexPosition = gl.getAttribLocation(myShaderProgram,"vertexPosition");
+  var vertexPosition = gl.getAttribLocation(program,"vertexPosition");
   gl.vertexAttribPointer( vertexPosition, 4, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( vertexPosition );
 
@@ -120,7 +131,7 @@ function setupBuffers() {
   gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(vertNormals), gl.STATIC_DRAW);
 
-  var nvPosition = gl.getAttribLocation(myShaderProgram,"nv");
+  var nvPosition = gl.getAttribLocation(program,"nv");
   gl.vertexAttribPointer( nvPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( nvPosition );
 }
@@ -152,9 +163,9 @@ function rotate() {
   var rotMatX = makeRotationXMatrix(alph1);
   var rotMatY = makeRotationYMatrix(alph2);
   var rotMatZ = makeRotationZMatrix(alph3); // mult(makeRotationYMatrix(alph), mult(makeRotationYMatrix(alph), makeRotationXMatrix(alph)));
-  var rotMatXLoc = gl.getUniformLocation(myShaderProgram, "rotMatX");
-  var rotMatYLoc = gl.getUniformLocation(myShaderProgram, "rotMatY");
-  var rotMatZLoc = gl.getUniformLocation(myShaderProgram, "rotMatZ");
+  var rotMatXLoc = gl.getUniformLocation(program, "rotMatX");
+  var rotMatYLoc = gl.getUniformLocation(program, "rotMatY");
+  var rotMatZLoc = gl.getUniformLocation(program, "rotMatZ");
   gl.uniformMatrix4fv(rotMatXLoc, false, rotMatX);
   gl.uniformMatrix4fv(rotMatYLoc, false, rotMatY);
   gl.uniformMatrix4fv(rotMatZLoc, false, rotMatZ);

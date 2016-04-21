@@ -1,5 +1,5 @@
-// Uniform locations that need to be altered.
-var PLoc, alphaLoc, IaLoc, IdLoc, IsLoc, kaLoc, kdLoc, ksLoc, p0Loc;
+// Lighting Uniform locations that need to be altered.
+var alphaLoc, IaLoc, IdLoc, IsLoc, kaLoc, kdLoc, ksLoc, p0Loc;
 
 // Point light along with its intensity, reflectance coefficients, and on state.
 var p0;
@@ -46,13 +46,13 @@ function setLightData() {
 
 /* Retrieves uniform locations */
 function getNeededLocations() {
-  p0Loc = gl.getUniformLocation(myShaderProgram, "p0");
-  IaLoc = gl.getUniformLocation(myShaderProgram, "Ia");
-  IdLoc = gl.getUniformLocation(myShaderProgram, "Id");
-  IsLoc = gl.getUniformLocation(myShaderProgram, "Is");
-  kaLoc = gl.getUniformLocation(myShaderProgram, "ka");
-  kdLoc = gl.getUniformLocation(myShaderProgram, "kd");
-  ksLoc = gl.getUniformLocation(myShaderProgram, "ks");
+  p0Loc = gl.getUniformLocation(program, "p0");
+  IaLoc = gl.getUniformLocation(program, "Ia");
+  IdLoc = gl.getUniformLocation(program, "Id");
+  IsLoc = gl.getUniformLocation(program, "Is");
+  kaLoc = gl.getUniformLocation(program, "ka");
+  kdLoc = gl.getUniformLocation(program, "kd");
+  ksLoc = gl.getUniformLocation(program, "ks");
 }
 
 /* Enables the point light */
@@ -75,10 +75,10 @@ function disablePointLight() {
 
 /* Enables directional light */
 function enableDirectionalLight() {
-  lightDirectionLoc = gl.getUniformLocation(myShaderProgram, "lightDirection");
+  lightDirectionLoc = gl.getUniformLocation(program, "lightDirection");
   gl.uniform3f(lightDirectionLoc, lightDirection[0], lightDirection[1], lightDirection[2]);
 
-  directionColorLoc = gl.getUniformLocation(myShaderProgram, "directionColor");
+  directionColorLoc = gl.getUniformLocation(program, "directionColor");
   gl.uniform3f(directionColorLoc, directionColor[0], directionColor[1], directionColor[2]);
 }
 
