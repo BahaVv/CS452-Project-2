@@ -77,8 +77,8 @@ function initGL(){
 
   numVertices = 1738;
   numTriangles = 3170;
-  vertices = getVertices(); // vertices and faces are defined in object.js
-  indexList = getFaces();
+  vertices = getHeadVertices(); // vertices and faces are defined in object.js
+  indexList = getHeadFaces();
   flatVertices = flatten(vertices);
   vertNormals = generateNormals();
 

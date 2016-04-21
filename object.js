@@ -1,4 +1,56 @@
-function getVertices() {
+function getCubeVertices(){
+	vertices = [];
+	return vertices;
+}
+
+function getCubeFaces(){
+	indexList = [];
+	return indexList;
+}
+
+function getCubeTextureMap(){
+	texIdxList = [];
+	return texIdxList;
+}
+
+function getTetraVertices(){
+	vertices = [];
+	return vertices;
+}
+
+function getTetraFaces(){
+	indexList = [];
+	return indexList;
+}
+
+function getTetraTextureMap(){
+	texIdxList = [];
+	return texIdxList;
+}
+
+
+function getOctaVertices(){
+	vertices = [];
+	return vertices;
+}
+
+function getOctaFaces(){
+	indexList = [];
+	return indexList;
+}
+
+function getSphereVertices(){
+	vertices = [];
+	return vertices;
+}
+
+function getSphereFaces(){
+	indexList = [];
+	return indexList;
+}
+
+
+function getHeadVertices() {
 
 vertices=[vec4(-0.646532,-0.443041,-0.751356,1.0),
 	vec4(-0.672225,-0.451808,-0.767970,1.0),
@@ -1743,7 +1795,7 @@ vertices=[vec4(-0.646532,-0.443041,-0.751356,1.0),
 
 }
 
-function getFaces() {
+function getHeadFaces() {
 
 indexList=[0,1,3,
 	3,1,2,
@@ -4919,4 +4971,3 @@ indexList=[0,1,3,
 	return indexList;
 
 }
-
