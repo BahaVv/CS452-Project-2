@@ -1790,6 +1790,12 @@ vertices=[vec4(-0.646532,-0.443041,-0.751356,1.0),
 	vec4(1.163401,-1.062273,-0.264376,1.0),
 	vec4(1.159922,-1.361471,-0.233095,1.0),
 	vec4(1.024614,-1.354885,-0.386446,1.0)];
+	
+	for (var i = 0; i < vertices.length; i++){
+		vertices[i][0] = (vertices[i][0]/2);
+		vertices[i][1] = (vertices[i][1]/2);
+		vertices[i][2] = (vertices[i][2]/2);
+	}
 
 	return vertices;
 
