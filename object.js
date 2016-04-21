@@ -1,30 +1,185 @@
 function getCubeVertices(){
-	vertices = [];
+	vertices = [
+		// Front face, Triangle 1
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Front face, Triangle 2
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Left face, Triangle 1
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Left face, Triangle 2
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Back face, Triangle 1
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Back face, Triangle 2
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Right face, Triangle 1
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Right face, Triangle 2
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Top face, Triangle 1
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Top face, Triangle 2 
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Bottom face, Triangle 1 
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		
+		// Bottom face, Triangle 2 
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0),
+		vec4(0,0,0,1.0)
+		
+	];
 	return vertices;
 }
 
 function getCubeFaces(){
-	indexList = [];
+	indexList = [
+			0, 1, 2,
+			3, 4, 5,
+			6, 7, 8,
+			9, 10, 11,
+			12, 13, 14,
+			15, 16, 17,
+			18, 19, 20,
+			21, 22, 23,
+			24, 25, 26,
+			27, 28, 29,
+			30, 31, 32,
+			33, 34, 35
+	];
 	return indexList;
 }
 
 function getCubeTextureMap(){
-	texIdxList = [];
+	texIdxList = [
+		// Front face, Triangle 1
+
+		
+		// Front face, Triangle 2
+
+		
+		// Left face, Triangle 1
+
+		
+		// Left face, Triangle 2
+
+		
+		// Back face, Triangle 1
+
+		
+		// Back face, Triangle 2
+		
+		
+		// Right face, Triangle 1
+
+		
+		// Right face, Triangle 2
+
+		
+		// Top face, Triangle 1
+
+		
+		// Top face, Triangle 2 
+		
+		
+		// Bottom face, Triangle 1 
+
+		
+		// Bottom face, Triangle 2 
+
+	];
 	return texIdxList;
 }
 
-function getTetraVertices(){
-	vertices = [];
+function getPyramidVertices(){
+	vertices = [
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0), 
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0), 
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0)
+	];
 	return vertices;
 }
 
-function getTetraFaces(){
-	indexList = [];
+function getPyramidFaces(){
+	indexList = [
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+		9, 10, 11,
+		12, 13, 14,
+		15, 16, 17
+	];
 	return indexList;
 }
 
-function getTetraTextureMap(){
-	texIdxList = [];
+function getPyramidTextureMap(){
+	texIdxList = [
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0,
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0,
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0,
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0,
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0,
+		0.0, 0.0,
+		0.5, 1.0,
+		1.0, 0.0
+	];
 	return texIdxList;
 }
 
@@ -1792,8 +1947,8 @@ vertices=[vec4(-0.646532,-0.443041,-0.751356,1.0),
 	vec4(1.024614,-1.354885,-0.386446,1.0)];
 	
 	for (var i = 0; i < vertices.length; i++){
-		vertices[i][0] = (vertices[i][0]/2);
-		vertices[i][1] = (vertices[i][1]/2);
+		vertices[i][0] = ((vertices[i][0] - 10)/2);
+		vertices[i][1] = ((vertices[i][1] + 10)/2);
 		vertices[i][2] = (vertices[i][2]/2);
 	}
 

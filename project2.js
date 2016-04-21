@@ -143,7 +143,7 @@ function setViewingData() {
 
   // Set bounds for projections.
   viewerDist = length(subtract(e, a));
-  near = viewerDist - 3;
+  near = viewerDist - 8;
   far = viewerDist + 10;
 
   // Othographic projection bounds.
