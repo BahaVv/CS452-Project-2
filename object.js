@@ -109,13 +109,11 @@ function getPyramidVertices(){
 		vec4(-0.5, 0.0, 0.5, 1.0)
 	];
 		
-		for (var i = 0; i < vertices.length; i++){
+	for (var i = 0; i < vertices.length; i++){
 		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
 		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
 		vertices[i][2] = (vertices[i][2]/1.5);
 	}
-	
-	];
 	return vertices;
 }
 
