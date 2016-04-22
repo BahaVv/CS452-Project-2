@@ -37,8 +37,9 @@ function makeRotationZMatrix(angle) {
 /* A convoluded function that returns a list of vertex normals.
     Iterates through all the points and caclulates all the face normals around
     it then uses those face normals to create the vertex normal.*/
-function generateNormals() {
+function generateNormals(vertices, indexList) {
   var vertNormals = [];
+  var flatVertices = flatten(vertices);
   for (var i = 0; i < vertices.length; i++) {
     var faceNormals = [];
     for (var j = 0; j < indexList.length; j+=3) {

@@ -48,6 +48,20 @@ var colorVectorLoc;
 var c1 = 1;
 var alph1 = 0, alph2 = 0, alph3 = 0;
 
+var moaiObj, cubeObj, pyramidObj, octaObj, sphereObj;
+
+function createObject(numVert, numTriangles, vertices, indexList) {
+  var obj = {
+    numVert: numVert,
+    numTriangles: numTriangles,
+    vertices: vertices,
+    indexList: indexList,
+    vertNormals: generateNormals(vertices, indexList)
+  };
+
+  return obj;
+}
+
 function setupGL() {
   var canvas = document.getElementById( "gl-canvas" );
 
@@ -75,14 +89,7 @@ function initGL(){
   program = initShaders( gl, "vertex-shader", "fragment-shader" );
   gl.useProgram( program );
 
-  numVertices = 1738;
-  numTriangles = 3170;
-  vertices = getHeadVertices(); // vertices and faces are defined in object.js
-  indexList = getHeadFaces();
-  flatVertices = flatten(vertices);
-  vertNormals = generateNormals();
-
-  setupBuffers();
+  moaiObj = createObject(1738, 3170, getHeadVertices(), getHeadFaces());
 
   var MLoc = gl.getUniformLocation(program, "M");
   gl.uniformMatrix4fv(MLoc, false, M);
@@ -106,22 +113,25 @@ function initGL(){
 }
 
 function render() {
-    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
-    colorVector = vec4(1.0, 0.0, 0.0, 1.0);
-    gl.uniform4fv(colorVectorLoc, colorVector);
-    gl.drawElements( gl.TRIANGLES, 3 * numTriangles, gl.UNSIGNED_SHORT, 0 );
-    rotate();
-    requestAnimFrame(render);
+  gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+
+  setupBuffers(moaiObj);
+  colorVector = vec4(1.0, 0.0, 0.0, 1.0);
+  gl.uniform4fv(colorVectorLoc, colorVector);
+  gl.drawElements( gl.TRIANGLES, 3 * moaiObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  rotate();
+
+  requestAnimFrame(render);
 }
 
-function setupBuffers() {
+function setupBuffers(obj) {
   var indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexList), gl.STATIC_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(obj.indexList), gl.STATIC_DRAW);
 
   var verticesBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, flatVertices, gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(obj.vertices), gl.STATIC_DRAW);
 
   var vertexPosition = gl.getAttribLocation(program,"vertexPosition");
   gl.vertexAttribPointer( vertexPosition, 4, gl.FLOAT, false, 0, 0 );
@@ -129,7 +139,7 @@ function setupBuffers() {
 
   var normalsBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, flatten(vertNormals), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(obj.vertNormals), gl.STATIC_DRAW);
 
   var nvPosition = gl.getAttribLocation(program,"nv");
   gl.vertexAttribPointer( nvPosition, 3, gl.FLOAT, false, 0, 0 );
