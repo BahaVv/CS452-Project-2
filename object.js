@@ -107,6 +107,7 @@ function getPyramidVertices(){
 		vec4(0.5, 0.0, -0.5, 1.0),
 		vec4(0.5, 0.0, 0.5, 1.0),
 		vec4(-0.5, 0.0, 0.5, 1.0)
+	];
 		
 		for (var i = 0; i < vertices.length; i++){
 		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
