@@ -1,124 +1,88 @@
 function getCubeVertices(){
-	vertices = [
-		// Front face, Triangle 1
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Front face, Triangle 2
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Left face, Triangle 1
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Left face, Triangle 2
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Back face, Triangle 1
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Back face, Triangle 2
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Right face, Triangle 1
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Right face, Triangle 2
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Top face, Triangle 1
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Top face, Triangle 2 
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Bottom face, Triangle 1 
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		
-		// Bottom face, Triangle 2 
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0),
-		vec4(0,0,0,1.0)
-		
+	vertices = [ // TODO: These need to be vec4's with a 1.0 on the end of each for the w coord
+	// Front face
+	-0.55, -0.55, 0.55,
+    0.55, -0.55, 0.55,
+    0.55, 0.55, 0.55, 
+	-0.55, 0.55, 0.55,
+
+    // Back face
+    -0.55, 0.55, -0.55,
+    0.55, 0.55, -0.55,
+    0.55, -0.55, -0.55, 
+	-0.55, -0.55, -0.55,
+
+    // Top face
+    -0.55, 0.55, 0.55,
+    0.55, 0.55, 0.55,
+    0.55, 0.55, -0.55, 
+	-0.55, 0.55, -0.55,
+
+    // Bottom face
+    -0.55, -0.55, -0.55,
+    0.55, -0.55, -0.55,
+    0.55, -0.55, 0.55, 
+	-0.55, -0.55, 0.55,
+
+    // Right face
+    0.55, -0.55, -0.55,
+    0.55, 0.55, -0.55,
+    0.55, 0.55, 0.55,
+    0.55, -0.55, 0.55,
+
+    // Left face
+    -0.55, -0.55, -0.55,
+    -0.55, -0.55, 0.55,
+    -0.55, 0.55, 0.55,
+    -0.55, 0.55, -0.55		
 	];
 	return vertices;
 }
 
 function getCubeFaces(){
 	indexList = [
-			0, 1, 2,
-			3, 4, 5,
-			6, 7, 8,
-			9, 10, 11,
-			12, 13, 14,
-			15, 16, 17,
-			18, 19, 20,
-			21, 22, 23,
-			24, 25, 26,
-			27, 28, 29,
-			30, 31, 32,
-			33, 34, 35
+		0, 1, 2, 0, 2, 3, // front
+		4, 5, 6, 4, 6, 7, // back
+		8, 9, 10, 8, 10, 11, // top
+		12, 13, 14, 12, 14, 15, // bottom
+		16, 17, 18, 16, 18, 19, // right
+		20, 21, 22, 20, 22, 23 // left
 	];
 	return indexList;
 }
 
 function getCubeTextureMap(){
 	texIdxList = [
-		// Front face, Triangle 1
-
-		
-		// Front face, Triangle 2
-
-		
-		// Left face, Triangle 1
-
-		
-		// Left face, Triangle 2
-
-		
-		// Back face, Triangle 1
-
-		
-		// Back face, Triangle 2
-		
-		
-		// Right face, Triangle 1
-
-		
-		// Right face, Triangle 2
-
-		
-		// Top face, Triangle 1
-
-		
-		// Top face, Triangle 2 
-		
-		
-		// Bottom face, Triangle 1 
-
-		
-		// Bottom face, Triangle 2 
-
+		// Front
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
+		// Back
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
+		// Top
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
+		// Bottom
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
+		// Right
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
+		// Left
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0
 	];
 	return texIdxList;
 }
