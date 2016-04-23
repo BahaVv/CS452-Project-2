@@ -22,11 +22,11 @@
                      0.0, 1.0, 0.0, 0.0,
                      0.0, 0.0, -1.0, 0.0,
                      0.0, 0.0, 0.0, 1.0);
-					 
-	uniform isTexture;
+
+	uniform float isTexture;
 	attribute vec2 textureCoordinate;
 	varying vec2 fTextureCoordinate;
-	
+
     void main() {
 
         gl_PointSize = 1.0;
@@ -52,7 +52,7 @@
         Ia_pp0 = Ia / (distance*distance);
         Id_pp0 = Id / (distance*distance);
         Is_pp0 = Is / (distance*distance);
-		
+
 		if (isTexture != 0.0)
 			fTextureCoordinate = textureCoordinate;
 
@@ -74,12 +74,12 @@
   varying vec3 i, v, n;
 
   vec3 R;
-  
-  uniform isTexture;
-  
+
+  uniform float isTexture;
+
   varying vec2 fTextureCoordinate;
   uniform sampler2D texMap0;
-  
+
   void main() {
     vec3 i_n, v_n, n_n;
     i_n = normalize(i);
@@ -106,7 +106,7 @@
     Rs.b = ks.b*Is_pp0.b*shiny*costhetag0;
 
     R = clamp(Ra + Rd + Rs + directional, 0.0, 1.0);
-	
+
 	if (isTexture != 0.0){
 		vec4 color0 = texture2D(texMap0, fTextureCoordinate);
 		gl_FragColor = color0;
@@ -114,7 +114,7 @@
 	} else {
 		gl_FragColor = colorVector + vec4( R.r, R.g, R.b, 1.0 );
 	}
-    
+
   }
 
 </script>
@@ -129,12 +129,12 @@
 <script type="text/javascript" src="object.js"></script>
 </head>
 
-<body onload="initGL()"  onkeydown="update(event)">
+<body onload="setupSlider()"  onkeydown="update(event)">
     <canvas id="gl-canvas" height="512" width="512" style="display:block"> </canvas>
 	<img id="BlueRogues" hidden src="BlueRogues.jpg"/>
 	<img id="BrickTexture" hidden src="brick-texture.jpg"/>
     <h5>Speed Slider (go left for negative speed, right for positive)</h5>
-    <input type="range" id="speedSlider" name="name" value="0" min="-5" max="5">
+    <input type="range" id="speedSlider" name="name" value="1" min="-5" max="5">
     <h5>Press space for a color randomization</h5>
 </body>
 </html>
