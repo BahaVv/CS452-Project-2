@@ -11,7 +11,8 @@ We had decided to draw 5 shapes including:
 
 The tetrahedron and cube were textured, and the rest were applied colors through
 the colorVector variable. The colors are randomly chosen, and described in the
-interaction section.
+interaction section. The lighting for the shapes are a directional and point light,
+and is implemented with phong shading.
 
 ## Animation
 The shapes are moving along a rotation of the same amplitude in all three dimensions.
@@ -20,4 +21,5 @@ where c1 is a number controlled by a slider that goes between -5 and 5.
 
 ## Interaction
 There are two different different ways of interacting with the scene. The first is
-randomizing colors 
+randomizing colors by pressing the spacebar. Second, one can increase and decrease
+the speed of the objects using the slider that is right below the canvas.
