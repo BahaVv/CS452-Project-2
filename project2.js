@@ -37,6 +37,9 @@ var vup;
 var orthLeft, orthRight, orthTop, orthBottom;
 var perLeft, perRight, perTop, perBottom;
 
+// Bool to see if object being rendered has a texture
+var textured
+
 // Distance bounds
 var near, far;
 
@@ -54,13 +57,20 @@ var indexBuffer, verticesBuffer, normalsBuffer;
 
 var vertexPosition, nvPosition;
 
-function createObject(numVert, numTriangles, vertices, indexList) {
+var picture, textureImage;
+
+var texCoordBuffer, texCoordLoc;
+
+var isTextureLoc;
+
+function createObject(numVert, numTriangles, vertices, indexList, textureCoords) {
   var obj = {
     numVert: numVert,
     numTriangles: numTriangles,
     vertices: vertices,
     indexList: indexList,
     vertNormals: generateNormals(vertices, indexList)
+	textureCoords: textureCoords
   };
 
   return obj;
@@ -92,15 +102,20 @@ function initGL(){
   // Below is all of the accessing of the GPU
   program = initShaders( gl, "vertex-shader", "fragment-shader" );
   gl.useProgram( program );
+  
+  // Apologies.
+  var moaiTex = new Array(getHeadVertices.length() * 2);
+  var octaTex = new Array(getOctaVertices.length() * 2);
+  var sphereTex = new Array(getSphereVertices.length() * 2);
 
-  moaiObj = createObject(1738, 3170, getHeadVertices(), getHeadFaces());
-  cubeObj = createObject(36, 36, getCubeVertices(), getCubeFaces());
-  pyramidObj = createObject(18, 18, getPyramidVertices(), getPyramidFaces());
-  octaObj = createObject(36, 36, getOctaVertices(), getOctaFaces());
-  sphereObj = createObject(getSphereVertices().length, getSphereFaces().length, getSphereVertices(), getSphereFaces());
+  moaiObj = createObject(1738, 3170, getHeadVertices(), getHeadFaces(), moaiTex);
+  cubeObj = createObject(36, 36, getCubeVertices(), getCubeFaces(), getCubeTextureMap());
+  pyramidObj = createObject(18, 18, getPyramidVertices(), getPyramidFaces(), getPyramidTextureMap());
+  octaObj = createObject(36, 36, getOctaVertices(), getOctaFaces(), octaTex);
+  sphereObj = createObject(getSphereVertices().length, getSphereFaces().length, getSphereVertices(), getSphereFaces(), sphereTex);
 
   console.log(cubeObj.numVert);
-    console.log(cubeObj.numTriangles);
+  console.log(cubeObj.numTriangles);
 
   var MLoc = gl.getUniformLocation(program, "M");
   gl.uniformMatrix4fv(MLoc, false, M);
@@ -126,35 +141,90 @@ function initGL(){
 
   vertexPosition = gl.getAttribLocation(program,"vertexPosition");
   nvPosition = gl.getAttribLocation(program,"nv");
+  
+	// Initialize first texture
+	picture = document.getElementById("BlueRogues");
+	textureImage = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, textureImage);
+	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, picture);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-  render();
+	texCoordBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, flatten(textureCoords), gl.STATIC_DRAW);
+
+	texCoordLoc = gl.getAttribLocation(program, "textureCoordinate");
+	gl.vertexAttribPointer( texCoordLoc, 2, gl.FLOAT, false, 0, 0 );
+	gl.enableVertexAttribArray(texCoordLoc);
+	
+	isTextureLoc = gl.getUniformLocation(program, "isTexture");
+	gl.uniform1f(isTextureLoc, 0.0);
+
+	render();
 }
 
 function render() {
   gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
+  // Draw moai
+  gl.uniform1f(isTextureLoc, 0.0)
+  gl.uniform1i(gl.getUniformLocation(program, "texMap0"), 0);
   colorVector = vec4(1.0, 0.0, 0.0, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(moaiObj);
   gl.drawElements( gl.TRIANGLES, 3 * moaiObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
+  // Draw cube
+  gl.uniform1f(isTextureLoc, 1.0)
+  picture = document.getElementById("BlueRogues");
+  textureImage = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, textureImage);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, picture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.uniform1i(gl.getUniformLocation(program, "texMap0"), 0);
   colorVector = vec4(0.0, 0.5, 0.0, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(cubeObj);
   gl.drawElements( gl.TRIANGLES, cubeObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
+  // Draw pyramid
+  gl.uniform1f(isTextureLoc, 1.0)
+  picture = document.getElementById("BrickTexture");
+  textureImage = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, textureImage);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, picture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.uniform1i(gl.getUniformLocation(program, "texMap0"), 0);
   colorVector = vec4(0.5, 0.25, 0.5, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(pyramidObj);
   gl.drawElements( gl.TRIANGLES, pyramidObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
+  // Draw octa
+  gl.uniform1f(isTextureLoc, 0.0)
+  gl.uniform1i(gl.getUniformLocation(program, "texMap0"), 0);
   colorVector = vec4(0.5, 0.25, 0.5, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(octaObj);
   gl.drawElements( gl.TRIANGLES, octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
+  // Draw sphere
+  gl.uniform1f(isTextureLoc, 0.0)
+  gl.uniform1i(gl.getUniformLocation(program, "texMap0"), 0);
   colorVector = vec4(0.5, 0.25, 0.5, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(sphereObj);
@@ -178,6 +248,12 @@ function setupBuffers(obj) {
 
   gl.vertexAttribPointer( nvPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( nvPosition );
+  
+  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(obj.textureCoords), gl.STATIC_DRAW);
+	
+  gl.vertexAttribPointer( texCoordLoc, 2, gl.FLOAT, false, 0, 0 );
+  gl.enableVertexAttribArray(texCoordLoc);
 }
 
 function setViewingData() {
