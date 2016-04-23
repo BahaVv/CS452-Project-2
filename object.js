@@ -186,7 +186,7 @@ function getOctaVertices(){
 		vec4(-0.5, 0.0, 0.5, 1.0),
 		vec4(0.5, 0.0, -0.5, 1.0),
 		vec4(0.5, 0.0, 0.5, 1.0),
-		vec4(-0.5, 0.0, 0.5, 1.0)
+		vec4(-0.5, 0.0, 0.5, 1.0),
 		
 		// And now for the bottom...
 		
