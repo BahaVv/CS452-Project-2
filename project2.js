@@ -90,6 +90,10 @@ function initGL(){
   gl.useProgram( program );
 
   moaiObj = createObject(1738, 3170, getHeadVertices(), getHeadFaces());
+  cubeObj = createObject(24, 24, getCubeVertices(), getCubeFaces());
+  pyramidObj = createObject(18, 18, getPyramidVertices(), getPyramidFaces());
+  octaObj = createObject(getOctaVertices().length, getOctaFaces().length, getOctaVertices(), getOctaFaces());
+  sphereObj = createObject(getSphereVertices().length, getSphereFaces().length, getSphereVertices(), getSphereFaces());
 
   var MLoc = gl.getUniformLocation(program, "M");
   gl.uniformMatrix4fv(MLoc, false, M);
@@ -121,6 +125,26 @@ function render() {
   gl.drawElements( gl.TRIANGLES, 3 * moaiObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
+  // setupBuffers(cubeObj);
+  // colorVector = vec4(0.0, 0.5, 0.0, 1.0);
+  // gl.uniform4fv(colorVectorLoc, colorVector);
+  // gl.drawElements( gl.TRIANGLES, 3 * cubeObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  //
+  // setupBuffers(pyramidObj);
+  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  // gl.uniform4fv(colorVectorLoc, colorVector);
+  // gl.drawElements( gl.TRIANGLES, 3 * pyramidObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  //
+  // setupBuffers(octaObj);
+  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  // gl.uniform4fv(colorVectorLoc, colorVector);
+  // gl.drawElements( gl.TRIANGLES, 3 * octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  //
+  // setupBuffers(sphereObj);
+  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  // gl.uniform4fv(colorVectorLoc, colorVector);
+  // gl.drawElements( gl.TRIANGLES, 3 * sphereObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  
   requestAnimFrame(render);
 }
 
