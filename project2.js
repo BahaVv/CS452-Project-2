@@ -54,6 +54,10 @@ var indexBuffer, verticesBuffer, normalsBuffer;
 
 var vertexPosition, nvPosition;
 
+var vecCol1, vecCol2, vecCol3, vecCol4, vecCol5;
+
+var slider;
+
 function createObject(numVert, numTriangles, vertices, indexList) {
   var obj = {
     numVert: numVert,
@@ -127,35 +131,52 @@ function initGL(){
   vertexPosition = gl.getAttribLocation(program,"vertexPosition");
   nvPosition = gl.getAttribLocation(program,"nv");
 
+  slider = document.getElementById("speedSlider");
+
+  randomizeColors();
+
   render();
 }
 
+function randomizeColors() {
+  vecCol1 = getRandColor();
+  vecCol2 = getRandColor();
+  vecCol3 = getRandColor();
+  vecCol4 = getRandColor();
+  vecCol5 = getRandColor();
+}
+
+function getRandColor() {
+  return vec4(Math.random().toFixed(2),Math.random().toFixed(2),Math.random().toFixed(2),1.0);
+}
+
 function render() {
+  console.log(slider.value);
   gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-  colorVector = vec4(1.0, 0.0, 0.0, 1.0);
+  colorVector = vecCol1;
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(moaiObj);
   gl.drawElements( gl.TRIANGLES, 3 * moaiObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
-  colorVector = vec4(0.0, 0.5, 0.0, 1.0);
+  colorVector = vecCol2;
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(cubeObj);
   gl.drawElements( gl.TRIANGLES, cubeObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
-  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  colorVector = vecCol3;
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(pyramidObj);
   gl.drawElements( gl.TRIANGLES, pyramidObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
-  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  colorVector = vecCol4;
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(octaObj);
   gl.drawElements( gl.TRIANGLES, octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
-  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  colorVector = vecCol5;
   gl.uniform4fv(colorVectorLoc, colorVector);
   setupBuffers(sphereObj);
   gl.drawElements( gl.TRIANGLES, sphereObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
@@ -204,16 +225,17 @@ function setViewingData() {
 }
 
 function rotate() {
+  c1 = slider.value;
   var rotMatX = makeRotationXMatrix(alph1);
   var rotMatY = makeRotationYMatrix(alph2);
-  var rotMatZ = makeRotationZMatrix(alph3); // mult(makeRotationYMatrix(alph), mult(makeRotationYMatrix(alph), makeRotationXMatrix(alph)));
+  var rotMatZ = makeRotationZMatrix(alph3);
   var rotMatXLoc = gl.getUniformLocation(program, "rotMatX");
   var rotMatYLoc = gl.getUniformLocation(program, "rotMatY");
   var rotMatZLoc = gl.getUniformLocation(program, "rotMatZ");
   gl.uniformMatrix4fv(rotMatXLoc, false, rotMatX);
   gl.uniformMatrix4fv(rotMatYLoc, false, rotMatY);
   gl.uniformMatrix4fv(rotMatZLoc, false, rotMatZ);
-  alph1+=c1 * 0.0;
-  alph2+=0.05;
-  alph3+=0.0;
+  alph1+=c1*0.005;
+  alph2+=c1*0.005;
+  alph3+=c1*0.005;
 }

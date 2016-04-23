@@ -26,7 +26,7 @@
 
         gl_PointSize = 1.0;
 
-        vec4 transformedVertPos =  M * rotMatY * vertexPosition;
+        vec4 transformedVertPos =  M * rotMatX * rotMatY * rotMatZ * vertexPosition;
 
         float distance = length(vertexPosition.xyz - p0);
 
@@ -108,7 +108,10 @@
 <script type="text/javascript" src="object.js"></script>
 </head>
 
-<body onload = "initGL()"  onkeydown="update(event)">
+<body onload="initGL()"  onkeydown="update(event)">
     <canvas id="gl-canvas" height="512" width="512" style="display:block"> </canvas>
+    <h5>Speed Slider (go left for negative speed, right for positive)</h5>
+    <input type="range" id="speedSlider" name="name" value="0" min="-5" max="5">
+    <h5>Press space for a color randomization</h5>
 </body>
 </html>

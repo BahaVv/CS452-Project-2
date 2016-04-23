@@ -5,5 +5,7 @@ function update(event) {
     console.log("FOOBAR");
   } else if (event.keyCode == 40) {
     c1 *= -1;
+  } else if(event.keyCode == 32) {
+    randomizeColors();
   }
 }
