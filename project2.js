@@ -50,6 +50,10 @@ var alph1 = 0, alph2 = 0, alph3 = 0;
 
 var moaiObj, cubeObj, pyramidObj, octaObj, sphereObj;
 
+var indexBuffer, verticesBuffer, normalsBuffer;
+
+var vertexPosition, nvPosition;
+
 function createObject(numVert, numTriangles, vertices, indexList) {
   var obj = {
     numVert: numVert,
@@ -90,10 +94,13 @@ function initGL(){
   gl.useProgram( program );
 
   moaiObj = createObject(1738, 3170, getHeadVertices(), getHeadFaces());
-  cubeObj = createObject(24, 24, getCubeVertices(), getCubeFaces());
+  cubeObj = createObject(36, 36, getCubeVertices(), getCubeFaces());
   pyramidObj = createObject(18, 18, getPyramidVertices(), getPyramidFaces());
-  octaObj = createObject(getOctaVertices().length, getOctaFaces().length, getOctaVertices(), getOctaFaces());
-  sphereObj = createObject(getSphereVertices().length, getSphereFaces().length, getSphereVertices(), getSphereFaces());
+  octaObj = createObject(36, 36, getOctaVertices(), getOctaFaces());
+  sphereObj = createObject(0, 0, getSphereVertices(), getSphereFaces());
+
+  console.log(cubeObj.numVert);
+    console.log(cubeObj.numTriangles);
 
   var MLoc = gl.getUniformLocation(program, "M");
   gl.uniformMatrix4fv(MLoc, false, M);
@@ -113,59 +120,62 @@ function initGL(){
   alphaLoc = gl.getUniformLocation(program, "alpha");
   gl.uniform1f(alphaLoc, alpha);
 
+  indexBuffer = gl.createBuffer();
+  verticesBuffer = gl.createBuffer();
+  normalsBuffer = gl.createBuffer();
+
+  vertexPosition = gl.getAttribLocation(program,"vertexPosition");
+  nvPosition = gl.getAttribLocation(program,"nv");
+
   render();
 }
 
 function render() {
   gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
-  setupBuffers(moaiObj);
   colorVector = vec4(1.0, 0.0, 0.0, 1.0);
   gl.uniform4fv(colorVectorLoc, colorVector);
+  setupBuffers(moaiObj);
   gl.drawElements( gl.TRIANGLES, 3 * moaiObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
   rotate();
 
-  // setupBuffers(cubeObj);
-  // colorVector = vec4(0.0, 0.5, 0.0, 1.0);
-  // gl.uniform4fv(colorVectorLoc, colorVector);
-  // gl.drawElements( gl.TRIANGLES, 3 * cubeObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
-  //
-  // setupBuffers(pyramidObj);
+  colorVector = vec4(0.0, 0.5, 0.0, 1.0);
+  gl.uniform4fv(colorVectorLoc, colorVector);
+  setupBuffers(cubeObj);
+  gl.drawElements( gl.TRIANGLES, cubeObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  rotate();
+
+  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  gl.uniform4fv(colorVectorLoc, colorVector);
+  setupBuffers(pyramidObj);
+  gl.drawElements( gl.TRIANGLES, pyramidObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+
+  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  gl.uniform4fv(colorVectorLoc, colorVector);
+  setupBuffers(octaObj);
+  gl.drawElements( gl.TRIANGLES, octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+
   // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
   // gl.uniform4fv(colorVectorLoc, colorVector);
-  // gl.drawElements( gl.TRIANGLES, 3 * pyramidObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
-  //
-  // setupBuffers(octaObj);
-  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
-  // gl.uniform4fv(colorVectorLoc, colorVector);
-  // gl.drawElements( gl.TRIANGLES, 3 * octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
-  //
   // setupBuffers(sphereObj);
-  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
-  // gl.uniform4fv(colorVectorLoc, colorVector);
   // gl.drawElements( gl.TRIANGLES, 3 * sphereObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
-  
+
   requestAnimFrame(render);
 }
 
 function setupBuffers(obj) {
-  var indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(obj.indexList), gl.STATIC_DRAW);
 
-  var verticesBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(obj.vertices), gl.STATIC_DRAW);
 
-  var vertexPosition = gl.getAttribLocation(program,"vertexPosition");
-  gl.vertexAttribPointer( vertexPosition, 4, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( vertexPosition );
+  gl.vertexAttribPointer( vertexPosition, 4, gl.FLOAT, false, 0, 0 );
 
-  var normalsBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(obj.vertNormals), gl.STATIC_DRAW);
 
-  var nvPosition = gl.getAttribLocation(program,"nv");
   gl.vertexAttribPointer( nvPosition, 3, gl.FLOAT, false, 0, 0 );
   gl.enableVertexAttribArray( nvPosition );
 }
@@ -203,7 +213,7 @@ function rotate() {
   gl.uniformMatrix4fv(rotMatXLoc, false, rotMatX);
   gl.uniformMatrix4fv(rotMatYLoc, false, rotMatY);
   gl.uniformMatrix4fv(rotMatZLoc, false, rotMatZ);
-  alph1+=c1 * 0.00;
+  alph1+=c1 * 0.0;
   alph2+=0.05;
-  alph3+=0.00;
+  alph3+=0.0;
 }
