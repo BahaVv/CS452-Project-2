@@ -97,7 +97,7 @@ function initGL(){
   cubeObj = createObject(36, 36, getCubeVertices(), getCubeFaces());
   pyramidObj = createObject(18, 18, getPyramidVertices(), getPyramidFaces());
   octaObj = createObject(36, 36, getOctaVertices(), getOctaFaces());
-  sphereObj = createObject(0, 0, getSphereVertices(), getSphereFaces());
+  sphereObj = createObject(getSphereVertices().length, getSphereFaces().length, getSphereVertices(), getSphereFaces());
 
   console.log(cubeObj.numVert);
     console.log(cubeObj.numTriangles);
@@ -155,10 +155,10 @@ function render() {
   setupBuffers(octaObj);
   gl.drawElements( gl.TRIANGLES, octaObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
-  // colorVector = vec4(0.5, 0.25, 0.5, 1.0);
-  // gl.uniform4fv(colorVectorLoc, colorVector);
-  // setupBuffers(sphereObj);
-  // gl.drawElements( gl.TRIANGLES, 3 * sphereObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
+  colorVector = vec4(0.5, 0.25, 0.5, 1.0);
+  gl.uniform4fv(colorVectorLoc, colorVector);
+  setupBuffers(sphereObj);
+  gl.drawElements( gl.TRIANGLES, sphereObj.numTriangles, gl.UNSIGNED_SHORT, 0 );
 
   requestAnimFrame(render);
 }

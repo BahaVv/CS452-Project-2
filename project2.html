@@ -26,7 +26,6 @@
 
         gl_PointSize = 1.0;
 
-        // vec4 transformedVertPos = M * rotMatX * rotMatY * rotMatZ * vertexPosition;
         vec4 transformedVertPos =  M * rotMatY * vertexPosition;
 
         float distance = length(vertexPosition.xyz - p0);
