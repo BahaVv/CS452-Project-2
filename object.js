@@ -1,3 +1,7 @@
+  var latitudeBands = 30;
+  var longitudeBands = 30;
+  var radius = 2;
+
 function getCubeVertices(){
 	vertices = [
 		// Front face
@@ -117,8 +121,8 @@ function getPyramidVertices(){
 	];
 
 	for (var i = 0; i < vertices.length; i++){
-		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
-		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
+		vertices[i][0] = ((vertices[i][0])/1.5);
+		vertices[i][1] = ((vertices[i][1])/1.5);
 		vertices[i][2] = (vertices[i][2]/1.5);
 	}
 	return vertices;
@@ -163,21 +167,126 @@ function getPyramidTextureMap(){
 
 function getOctaVertices(){
 	vertices = [];
+	
+		vertices = [
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(0.0, 0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0)
+		
+		// And now for the bottom...
+		
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, -0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.0, -0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(0.0, -0.75, 0.0, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(0.0, -0.75, 0.0, 1.0),
+		vec4(-0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0),
+		vec4(0.5, 0.0, -0.5, 1.0),
+		vec4(0.5, 0.0, 0.5, 1.0),
+		vec4(-0.5, 0.0, 0.5, 1.0)
+	];
+
+	for (var i = 0; i < vertices.length; i++){
+		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
+		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
+		vertices[i][2] = (vertices[i][2]/1.5);
+	}
+	
 	return vertices;
 }
 
 function getOctaFaces(){
-	indexList = [];
+	indexList = [
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+		9, 10, 11,
+		12, 13, 14,
+		15, 16, 17,
+		18, 19, 20,
+		21, 22, 23,
+		24, 25, 26,
+		27, 28, 29,
+		30, 31, 32,
+		33, 34, 35
+	];
 	return indexList;
 }
 
 function getSphereVertices(){
-	vertices = [];
-	return vertices;
+	
+	var vertices = [];
+	
+    for (var latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+      var theta = latNumber * Math.PI / latitudeBands;
+      var sinTheta = Math.sin(theta);
+      var cosTheta = Math.cos(theta);
+
+      for (var longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+        var phi = longNumber * 2 * Math.PI / longitudeBands;
+        var sinPhi = Math.sin(phi);
+        var cosPhi = Math.cos(phi);
+
+        var x = cosPhi * sinTheta;
+        var y = cosTheta;
+        var z = sinPhi * sinTheta;
+        var u = 1 - (longNumber / longitudeBands);
+        var v = 1 - (latNumber / latitudeBands);
+
+        vertices.push(vec4((radius*x),(radius*y),(radius*z),1.0));
+      }
+    }
+	
+	for (var i = 0; i < vertices.length; i++){
+		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
+		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
+		vertices[i][2] = (vertices[i][2]/1.5);
+	}
+	
+	return vertices;	
 }
 
 function getSphereFaces(){
 	indexList = [];
+	
+    for (var latNumber = 0; latNumber < latitudeBands; latNumber++) {
+      for (var longNumber = 0; longNumber < longitudeBands; longNumber++) {
+        var first = (latNumber * (longitudeBands + 1)) + longNumber;
+        var second = first + longitudeBands + 1;
+        indexList.push(first);
+        indexList.push(second);
+        indexList.push(first + 1);
+
+        indexList.push(second);
+        indexList.push(second + 1);
+        indexList.push(first + 1);
+      }
+    }
+	
 	return indexList;
 }
 
