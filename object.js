@@ -121,9 +121,9 @@ function getPyramidVertices(){
 	];
 
 	for (var i = 0; i < vertices.length; i++){
-		vertices[i][0] = ((vertices[i][0])/1.5);
-		vertices[i][1] = ((vertices[i][1])/1.5);
-		vertices[i][2] = (vertices[i][2]/1.5);
+		vertices[i][0] = ((vertices[i][0])/1);
+		vertices[i][1] = ((vertices[i][1])/1);
+		vertices[i][2] = (vertices[i][2]/1);
 	}
 	return vertices;
 }
@@ -211,9 +211,9 @@ function getOctaVertices(){
 	];
 
 	for (var i = 0; i < vertices.length; i++){
-		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
-		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
-		vertices[i][2] = (vertices[i][2]/1.5);
+		vertices[i][0] = ((vertices[i][0] + 6)/1.2);
+		vertices[i][1] = ((vertices[i][1] - 6)/1.2);
+		vertices[i][2] = (vertices[i][2]/1.2);
 	}
 	
 	return vertices;
@@ -263,7 +263,7 @@ function getSphereVertices(){
 	
 	for (var i = 0; i < vertices.length; i++){
 		vertices[i][0] = ((vertices[i][0] + 6)/1.5);
-		vertices[i][1] = ((vertices[i][1] - 6)/1.5);
+		vertices[i][1] = ((vertices[i][1] + 6)/1.5);
 		vertices[i][2] = (vertices[i][2]/1.5);
 	}
 	
